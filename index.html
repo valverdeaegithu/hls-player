@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Live Stream</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: black;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <video id="player" controls autoplay playsinline></video>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12"></script>
+  <script>
+    const url = new URLSearchParams(window.location.search).get("ios");
+    const video = document.getElementById("player");
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(url);
+      hls.attachMedia(video);
+      new Plyr(video);
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = url;
+      new Plyr(video);
+    } else {
+      document.body.innerHTML = "<p>HLS not supported</p>";
+    }
+  </script>
+</body>
+</html>
